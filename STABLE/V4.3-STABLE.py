@@ -14,9 +14,9 @@ for x in range(100):
 # CHANGE THESE TO YOUR DIRECTORY
 
 # Change this to where you want to read and write documents
-DIRECTORY = "Documents/Python/SparksMaths/DATA/BookworkCheckCodes/"
+DIRECTORY = "Documents/SparksMaths/BookworkCodes"
 # Change this to where you want to save logs
-LOGDIRECTORY = "Documents/Python/SparksMaths/DATA/LOGS/LOGS/Log.txt"
+LOGDIRECTORY = "Documents/SparksMaths/Log.txt"
 
 # Startup Logs		#Open Log File, Write and Close
 file = open(LOGDIRECTORY, "a")
