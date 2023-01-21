@@ -70,7 +70,7 @@ while True:
         BookworkCode = str(input(">>>"))
 
         # Make file to save to
-        with open(SaveDirectory + BookworkCode, "w+") as File:
+        with open(SaveDirectory + BookworkCode.lower(), "w+") as File:
             
             # Save answer for later print
             print("Enter Answer")
@@ -83,14 +83,24 @@ while True:
         print("Enter BookworkCode")
         BookworkCode = str(input(">>>"))
 
-        # Make file to save to
-        with open(SaveDirectory + BookworkCode, "r") as File:
-            
-            # Read file
-            File.read()
+        # If file exists
+        try:
+            # Make file to save to
+            with open(SaveDirectory + BookworkCode.lower(), "r") as File:
+                
+                # Read file
+                File.read()
 
-            # Print as BookworkCode: Ans    e.g. b10: 6
-            print(BookworkCode + ":", File)
+                # Print as BookworkCode: Ans    e.g. b10: 6
+                print(BookworkCode.lower() + ":", File)
+
+        # No file exists
+        except Exception as ErrorMsg:
+
+            # Msg
+            print(ErrorMsg)
+            print("Maybe You Forgot To Save That One Or Typed it In Wrong?")
+
 
     # Exit
     elif Option.lower() in ["3", "three", "quit", "close", "exit"]:
