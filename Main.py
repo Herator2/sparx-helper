@@ -54,6 +54,7 @@ except Exception as ErrorMsg:
 while True:
 
     # Print
+    os.system("clear")
     print("Save Or Open File?")
     print("1 - Save File")
     print("2 - Open File")
@@ -61,6 +62,7 @@ while True:
 
     # Take Option
     Option = str(input(">>>"))
+    os.system("clear")
 
     # Save:
     if Option.lower() in ["1", "one", "save"]:
@@ -73,8 +75,9 @@ while True:
         with open(SaveDirectory + BookworkCode.lower(), "w+") as File:
             
             # Save answer for later print
+            os.system("clear")
             print("Enter Answer")
-            File.write(str(print(">>>")))
+            File.write(str(input(">>>")))
 
     # Open:
     elif Option.lower() in ["2", "two", "open"]:
@@ -89,10 +92,13 @@ while True:
             with open(SaveDirectory + BookworkCode.lower(), "r") as File:
                 
                 # Read file
-                File.read()
+                Ans = File.read()
 
                 # Print as BookworkCode: Ans    e.g. b10: 6
-                print(BookworkCode.lower() + ":", File)
+                print(BookworkCode.lower() + ":", Ans)
+
+            # Stall
+            input(">>>")
 
         # No file exists
         except Exception as ErrorMsg:
@@ -101,6 +107,8 @@ while True:
             print(ErrorMsg)
             print("Maybe You Forgot To Save That One Or Typed it In Wrong?")
 
+            # Stall
+            input(">>>")
 
     # Exit
     elif Option.lower() in ["3", "three", "quit", "close", "exit"]:
