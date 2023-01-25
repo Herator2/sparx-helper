@@ -1,9 +1,12 @@
 
+# CHANGE THESE:
+Linux = True
+SaveDirectory = "Documents/BookworkCodes/"
+
 # Imports
 import os
 
 # Def
-SaveDirectory = "Documents/BookworkCodes/"
 BookworkCode = "b10"
 
 # Automatic folder creation
@@ -54,7 +57,10 @@ except Exception as ErrorMsg:
 while True:
 
     # Print
-    os.system("clear")
+    if Linux:
+        os.system("clear")
+    else:
+        os.system("cls")
     print("Save Or Open File?")
     print("1 - Save File")
     print("2 - Open File")
@@ -62,7 +68,10 @@ while True:
 
     # Take Option
     Option = str(input(">>>"))
-    os.system("clear")
+    if Linux:
+        os.system("clear")
+    else:
+        os.system("cls")
 
     # Save:
     if Option.lower() in ["1", "one", "save"]:
@@ -74,8 +83,12 @@ while True:
         # Make file to save to
         with open(SaveDirectory + BookworkCode.lower(), "w+") as File:
             
-            # Save answer for later print
-            os.system("clear")
+            
+    # Save answer for later print
+            if Linux:
+                os.system("clear")
+            else:
+                os.system("cls")
             print("Enter Answer")
             File.write(str(input(">>>")))
 
