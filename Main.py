@@ -9,6 +9,12 @@ import os
 # Def
 BookworkCode = "b10"
 
+def Clear():
+    if Linux:
+        os.system("clear")
+    else:
+        os.system("cls")
+
 # Automatic folder creation
 try:
 
@@ -57,10 +63,7 @@ except Exception as ErrorMsg:
 while True:
 
     # Print
-    if Linux:
-        os.system("clear")
-    else:
-        os.system("cls")
+    Clear()
     print("Save Or Open File?")
     print("1 - Save File")
     print("2 - Open File")
@@ -68,10 +71,7 @@ while True:
 
     # Take Option
     Option = str(input(">>>"))
-    if Linux:
-        os.system("clear")
-    else:
-        os.system("cls")
+    Clear()
 
     # Save:
     if Option.lower() in ["1", "one", "save"]:
@@ -85,10 +85,7 @@ while True:
             
             
     # Save answer for later print
-            if Linux:
-                os.system("clear")
-            else:
-                os.system("cls")
+            Clear()
             print("Enter Answer")
             File.write(str(input(">>>")))
 
