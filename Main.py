@@ -1,19 +1,26 @@
 
 # CHANGE THESE:
 Linux = True
-SaveDirectory = "Documents/BookworkCodes/"
+SaveDirectory = "Documents/School/Math/AutoBookworkCodes/"
 
 # Imports
 import os
 
-# Def
-BookworkCode = "b10"
+# Reset Directory
+os.chdir("/home/alex/")
 
-def Clear():
-    if Linux:
-        os.system("clear")
-    else:
-        os.system("cls")
+# Def
+BookworkCode = "Start"
+
+'''
+THIS ABC DOES NOT CONTAIN A I OR AN O
+THESE DO NOT SEEM TO SHOW UP IN BOOKWORK CODES
+'''
+abc = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+
+def BookworkCodeInput():
+    global BookworkCode
+    BookworkCode = str(input("Enter BookworkCode\n>>>"))
 
 # Automatic folder creation
 try:
@@ -62,39 +69,46 @@ except Exception as ErrorMsg:
 # Loop
 while True:
 
-    # Print
-    Clear()
-    print("Save Or Open File?")
-    print("1 - Save File")
-    print("2 - Open File")
-    print("3 - Exit")
+    for x in range(30):
+        print("")
 
-    # Take Option
-    Option = str(input(">>>"))
-    Clear()
+    # NEW: Auto BookworkCode Guess
+    try:
+        if BookworkCode != "Start" and BookworkCode[0] != 'z' and len(BookworkCode) == 3: 
+            NewBookworkCode = []
+            for char in BookworkCode.lower():
+                NewBookworkCode.append(char)
 
-    # Save:
-    if Option.lower() in ["1", "one", "save"]:
+            # If Nein
+            if NewBookworkCode[1] == '9':
+                NewBookworkCode[1] = '0'  # Set Num To 0
+                NewBookworkCode[2] = str(int(NewBookworkCode[2])+1)  # Increment OTHER Num
+            else:
+                # Increment Num
+                NewBookworkCode[1] = str(int(NewBookworkCode[1])+1)  
 
-        # Get bookwork code to open as
-        print("Enter BookworkCode")
-        BookworkCode = str(input(">>>"))
+            # Work Out Letter
+            NewBookworkCode[0] = abc[int(NewBookworkCode[1])+int(NewBookworkCode[2])]
+            BookworkCode = "".join(NewBookworkCode)  # Parse
+            print(f"CODE | {BookworkCode}\n==============================")
+        else:
+            raise Exception("CONDITIONS NOT MET FOR AUTO GUESS")
 
-        # Make file to save to
-        with open(SaveDirectory + BookworkCode.lower(), "w+") as File:
-            
-            
-    # Save answer for later print
-            Clear()
-            print("Enter Answer")
-            File.write(str(input(">>>")))
+    # NORMAL INPUT If Guess Fails To Run
+    except Exception as ErrorMSG:
+        BookworkCode = str(input(f"{ErrorMSG}\nENTER BOOKWORK CODE MANUALLY\n>>>"))
+
+    # MENU
+    Option = str(input("TYPE | CODE - Overwrite BkwrkCode\nTYPE | OPEN - Search For BkwrkCode\nTYPE | ANY - Enter Answer\n     | >>>"))
+
+    # Bookwork Code
+    if Option.lower() in ["code"]:
+        BookworkCode = str(input("ENTER BOOKWORK CODE MANUALLY\n>>>"))
+        Option = str(input("ENTER ANSWER\n>>>"))
 
     # Open:
-    elif Option.lower() in ["2", "two", "open"]:
-
-        # Get bookwork code to open as
-        print("Enter BookworkCode")
-        BookworkCode = str(input(">>>"))
+    if Option.lower() in ["open"]:
+        BookworkCode = str(input("ENTER BOOKWORK CODE MANUALLY\n>>>"))
 
         # If file exists
         try:
@@ -115,13 +129,10 @@ while True:
 
             # Msg
             print(ErrorMsg)
-            print("Maybe You Forgot To Save That One Or Typed it In Wrong?")
-
-            # Stall
+            print("404: CODE NOT FOUND")
             input(">>>")
 
-    # Exit
-    elif Option.lower() in ["3", "three", "quit", "close", "exit"]:
-        
-        # Exit function
-        exit()
+    # Save Ans
+    else:
+        with open(SaveDirectory + BookworkCode.lower(), "w+") as File:
+            File.write(Option)
