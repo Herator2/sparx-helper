@@ -10,14 +10,13 @@ import os
 os.chdir("/home/alex/")
 
 # Def
-BookworkCode = "Start"
-
-'''
-THIS ABC DOES NOT CONTAIN A I OR AN O
-THESE DO NOT SEEM TO SHOW UP IN BOOKWORK CODES
-'''
+BookworkCode = "Start"  # Preset Bookwork Code At Startup
+Skip = False  # Used To Skip Bookwork Code Updating
+# THIS ABC DOES NOT CONTAIN A I OR AN O
+# THESE DO NOT SEEM TO SHOW UP IN BOOKWORK CODES
 abc = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 
+# This is used multiple times
 def BookworkCodeInput():
     global BookworkCode
     BookworkCode = str(input("Enter BookworkCode\n>>>"))
@@ -73,30 +72,35 @@ while True:
         print("")
 
     # NEW: Auto BookworkCode Guess
-    try:
-        if BookworkCode != "Start" and BookworkCode[0] != 'z' and len(BookworkCode) == 3: 
-            NewBookworkCode = []
-            for char in BookworkCode.lower():
-                NewBookworkCode.append(char)
+    if not Skip:
+        try:
+            if BookworkCode != "Start" and BookworkCode[0] != 'z' and len(BookworkCode) == 3: 
+                NewBookworkCode = []
+                for char in BookworkCode.lower():
+                    NewBookworkCode.append(char)
 
-            # If Nein
-            if NewBookworkCode[1] == '9':
-                NewBookworkCode[1] = '0'  # Set Num To 0
-                NewBookworkCode[2] = str(int(NewBookworkCode[2])+1)  # Increment OTHER Num
+                # If Nein
+                if NewBookworkCode[1] == '9':
+                    NewBookworkCode[1] = '0'  # Set Num To 0
+                    NewBookworkCode[2] = str(int(NewBookworkCode[2])+1)  # Increment OTHER Num
+                else:
+                    # Increment Num
+                    NewBookworkCode[1] = str(int(NewBookworkCode[1])+1)  
+
+                # Work Out Letter
+                NewBookworkCode[0] = abc[int(NewBookworkCode[1])+int(NewBookworkCode[2])]
+                BookworkCode = "".join(NewBookworkCode)  # Parse
+                print(f"CODE | {BookworkCode}\n==============================")
             else:
-                # Increment Num
-                NewBookworkCode[1] = str(int(NewBookworkCode[1])+1)  
+                raise Exception("CONDITIONS NOT MET FOR AUTO GUESS")
+            
+            if len(BookworkCode) != 3:
+                raise Exception("BOOKWORK CODE HAS OVERFLOWED")
 
-            # Work Out Letter
-            NewBookworkCode[0] = abc[int(NewBookworkCode[1])+int(NewBookworkCode[2])]
-            BookworkCode = "".join(NewBookworkCode)  # Parse
-            print(f"CODE | {BookworkCode}\n==============================")
-        else:
-            raise Exception("CONDITIONS NOT MET FOR AUTO GUESS")
-
-    # NORMAL INPUT If Guess Fails To Run
-    except Exception as ErrorMSG:
-        BookworkCode = str(input(f"{ErrorMSG}\nENTER BOOKWORK CODE MANUALLY\n>>>"))
+        # NORMAL INPUT If Guess Fails To Run
+        except Exception as ErrorMSG:
+            BookworkCode = str(input(f"{ErrorMSG}\nENTER BOOKWORK CODE MANUALLY\n>>>"))
+    else:  Skip = False
 
     # MENU
     Option = str(input("TYPE | CODE - Overwrite BkwrkCode\nTYPE | OPEN - Search For BkwrkCode\nTYPE | ANY - Enter Answer\n     | >>>"))
@@ -108,21 +112,25 @@ while True:
 
     # Open:
     if Option.lower() in ["open"]:
-        BookworkCode = str(input("ENTER BOOKWORK CODE MANUALLY\n>>>"))
+        TempBookworkCode = str(input("ENTER BOOKWORK CODE MANUALLY\n>>>"))
 
         # If file exists
         try:
             # Make file to save to
-            with open(SaveDirectory + BookworkCode.lower(), "r") as File:
+            with open(SaveDirectory + TempBookworkCode.lower(), "r") as File:
                 
                 # Read file
                 Ans = File.read()
 
                 # Print as BookworkCode: Ans    e.g. b10: 6
-                print(BookworkCode.lower() + ":", Ans)
+                print(TempBookworkCode.lower() + ":", Ans)
 
             # Stall
             input(">>>")
+
+            # Skip Bookwork Code Updation
+            # This means that the auto bookwork code pattern stays relevant / accurate
+            Skip = True
 
         # No file exists
         except Exception as ErrorMsg:
