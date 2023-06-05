@@ -7,7 +7,7 @@ SaveDirectory = "Documents/School/Math/AutoBookworkCodes/"
 import os
 
 # Reset Directory
-os.chdir("/home/alex/")
+os.chdir("/home/[USER]/")
 
 # Def
 BookworkCode = "Start"
