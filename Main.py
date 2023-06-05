@@ -40,8 +40,8 @@ except Exception as ErrorMsg:
     # Print msg
     print(ErrorMsg)
 
-    # Ask to automatically make folders incase of different error
-    print("Automatically Create Nessesary Folders? y|n")
+    # Ask to automatically make folders in case of different error
+    print("Automatically Create Necessary Folders? y|n")
     Option = str(input(">>>"))
 
     # Start Folder Creation
@@ -70,7 +70,7 @@ except Exception as ErrorMsg:
 while True:
 
     for x in range(30):
-        print("")
+        print()
 
     # NEW: Auto BookworkCode Guess
     try:
@@ -79,7 +79,7 @@ while True:
             for char in BookworkCode.lower():
                 NewBookworkCode.append(char)
 
-            # If Nein
+            # If Nine
             if NewBookworkCode[1] == '9':
                 NewBookworkCode[1] = '0'  # Set Num To 0
                 NewBookworkCode[2] = str(int(NewBookworkCode[2])+1)  # Increment OTHER Num
