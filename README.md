@@ -9,3 +9,9 @@ You are then able to type in a bookwork code to return the answer
  - Designed to be quick to use without unnessesary menu.
  - Few dependencies
 
+# Installation
+ - Clone the repo via git
+ - `git clone https://github.com/Herator2/Sparx-Maths-Bookwork-Code-Logger.git`
+ - Edit the configuration (currently located at the top ~10 lines of the main.py file)
+ - Make sure that you make your bookwork code saving location a empty folder
+ - Run the main.py file to start the program
