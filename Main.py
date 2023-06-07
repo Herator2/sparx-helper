@@ -1,22 +1,19 @@
 
 # CHANGE THESE:
-Linux = True
 SaveDirectory = "Documents/School/Math/AutoBookworkCodes/"
+UserDirectory = "/home/[USER]/"
 
 # Imports
 import os
 
-# Reset Directory
-os.chdir("/home/[USER]/")
 
-# Def
-BookworkCode = "Start"  # Preset Bookwork Code At Startup
-Skip = False  # Used To Skip Bookwork Code Updating
+# Move To Home Directory
+os.chdir(UserDirectory)
 # THIS ABC DOES NOT CONTAIN A I OR AN O
 # THESE DO NOT SEEM TO SHOW UP IN BOOKWORK CODES
 abc = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
-
-# This is used multiple times
+BookworkCode = "Start"  # Preset Bookwork Code At Startup
+Skip = False  # Used To Skip Bookwork Code Updating
 def BookworkCodeInput():
     global BookworkCode
     BookworkCode = str(input("Enter BookworkCode\n>>>"))
