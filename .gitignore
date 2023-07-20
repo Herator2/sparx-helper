@@ -1,3 +1,4 @@
 # Prevent Setting From Syncing To Repo
 .vscode
 .idea
+config.json
