@@ -61,8 +61,9 @@ try:
     with open(os.path.join(getDirectory(), "config.json"), "r") as config:
         # Load Config
         config = json.load(config)
-        SaveDirectory = config["savedir"]
+        SaveDirectory = config["SaveDirectory"]
         SaveDirectory = parsePath(SaveDirectory)
+        print("Loaded config from config.json")
 
 # Config Auto Creation
 except:
@@ -72,6 +73,7 @@ except:
         }
         json.dump(defualtConfig, config, indent=4)
         SaveDirectory = parsePath(defualtConfig["SaveDirectory"])
+        print("Made file config.json")
 
 # Test Folder
 try:
@@ -80,10 +82,14 @@ try:
 
 # Create Folder
 except Exception as ErrorMsg:
-    print(ErrorMsg)
     os.mkdir(SaveDirectory)
     print("Made Folder " + SaveDirectory)
 
+
+# Startup Print
+print("Succsessfully Started Application")
+print("Press ENTER to start")
+input(">>>")
 
 # Loop
 while True:
