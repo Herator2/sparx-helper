@@ -180,5 +180,5 @@ while True:
 
     # Save Ans
     else:
-        with open(SaveDirectory + BookworkCode.lower(), "w+") as File:
+        with open(os.path.join(SaveDirectory, BookworkCode.lower()), "w+") as File:
             File.write(Option)
