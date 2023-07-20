@@ -1,13 +1,8 @@
-# CHANGE THESE:
-SaveDirectory = "Documents/School/Math/AutoBookworkCodes/"
-UserDirectory = "/home/alex/"
-
-# Imports
 import os
+import json
 
 
 # Move To Home Directory
-os.chdir(UserDirectory)
 abc = [
     "a",
     "b",
@@ -38,46 +33,57 @@ BookworkCode = "Start"  # Preset Bookwork Code At Startup
 Skip = False  # Used To Skip Bookwork Code Updating
 
 
+# Clear Screen NEEDS WORK
 def clear():
     for x in range(30):
         print("")
 
 
-# Automatic folder creation
+# Get directory
+def getDirectory():
+    path = os.path.dirname(os.path.realpath(__file__))
+    path = path.replace("/src", "")
+    return path
+
+
+# Change path to absolute from relative
+def parsePath(path):
+    if "~" in path:
+        path = path.replace("~/", "")
+        path = os.path.join(getDirectory(), path)
+        return path
+    else:
+        return path
+
+
+# Config Read
 try:
-    # See if folder exists
-    with open(SaveDirectory + "Temp", "w+") as File:
-        # Read file
+    with open(os.path.join(getDirectory(), "config.json"), "r") as config:
+        # Load Config
+        config = json.load(config)
+        SaveDirectory = config["savedir"]
+        SaveDirectory = parsePath(SaveDirectory)
+
+# Config Auto Creation
+except:
+    with open(os.path.join(getDirectory(), "config.json"), "w") as config:
+        defualtConfig = {
+            "SaveDirectory": "~/BookworkCodes"
+        }
+        json.dump(defualtConfig, config, indent=4)
+        SaveDirectory = parsePath(defualtConfig["SaveDirectory"])
+
+# Test Folder
+try:
+    with open(os.path.join(SaveDirectory, "Temp"), "w+") as File:
         File.read()
 
-# If folder doesn't exist
+# Create Folder
 except Exception as ErrorMsg:
-    # Print msg
     print(ErrorMsg)
+    os.mkdir(SaveDirectory)
+    print("Made Folder " + SaveDirectory)
 
-    # Ask to automatically make folders in case of different error
-    print("Automatically Create Necessary Folders? y|n")
-    Option = str(input(">>> "))
-
-    # Start Folder Creation
-    if Option.lower() in ["y", "yes", "yea", "ye", "yeah", "1"]:
-        # Msg
-        print("Automatic Folder Creation Starting")
-
-        # Make Folders
-        os.mkdir(SaveDirectory)
-
-        # Finish msg
-        print("Made Folder " + SaveDirectory)
-        print("Finished Automatic Folder Creation")
-
-    # Skip
-    else:
-        # This is just for a slightly different msg
-        if Option.lower() in ["n", "no", "nope", "0", "2"]:
-            print("Skipping...")
-        else:
-            print("Unrecognised Answer: Skipping...")
 
 # Loop
 while True:
