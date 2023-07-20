@@ -4,10 +4,10 @@ It does this by automatically guessing your bookwork code and saving the answer 
 You are then able to type in a bookwork code to return the answer
 
 # Features
- - Automatically guesses next bookwork code to save your from having to type it in.
+ - Automatically guesses next bookwork code to save you from having to type it in.
  - Saves inputted answers to be returned to later incase of a bookwork check. (Discaimer: At time of writing you must manually type the answer into sparx **and** into this program)
- - Designed to be quick to use without unnessesary menu.
- - Few dependencies
+ - Designed to be quick to use without unnessesary menus.
+ - Very few dependencies
 
 # Installation
  - Clone the repo via git
