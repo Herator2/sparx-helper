@@ -141,9 +141,12 @@ while True:
     )
     Option = str(
         input(
-            "TYPE | CODE - Overwrite BkwrkCode\nTYPE | OPEN - Search For BkwrkCode\nTYPE | ANY - Enter Answer\n     | >>> "
+            "TYPE | CODE - Overwrite BkwrkCode\nTYPE | OPEN - Search For BkwrkCode\nTYPE | EXIT - Exit Program\nTYPE | ANY - Enter Answer\n     | >>> "
         )
     )
+    # Bookwork Code
+    if Option.lower() in ["exit"]:
+        exit()
 
     # Bookwork Code
     if Option.lower() in ["code"]:
@@ -157,7 +160,7 @@ while True:
         # If file exists
         try:
             # Make file to save to
-            with open(SaveDirectory + TempBookworkCode.lower(), "r") as File:
+            with open(os.path.join(SaveDirectory, TempBookworkCode.lower()), "r") as File:
                 # Read file
                 Ans = File.read()
 
