@@ -22,12 +22,12 @@ abc = [
     "r",
     "s",
     "t",
-    "u",
-    "v",
-    "w",
-    "x",
-    "y",
-    "z",
+    "a",
+    "a",
+    "a",
+    "a",
+    "a",
+    "a",
 ]  # THIS ABC DOES NOT CONTAIN A I OR AN O
 BookworkCode = "Start"  # Preset Bookwork Code At Startup
 Skip = False  # Used To Skip Bookwork Code Updating
@@ -100,7 +100,7 @@ while True:
         try:
             if (
                 BookworkCode != "Start"
-                and BookworkCode[0] != "z"
+                and BookworkCode[0] != "a"
                 and len(BookworkCode) == 3
             ):
                 NewBookworkCode = []
