@@ -9,6 +9,11 @@ You are then able to type in a bookwork code to return the answer
  - Designed to be quick to use without unnessesary menus.
  - Very few dependencies
 
+# Dependencies
+These should be in the Python Standard Library
+ - os python module
+ - json python module
+
 # Installation
 1. Download the newest release from [releases](https://github.com/Herator2/Sparx-Maths-Bookwork-Code-Logger/releases)
 2. Create a folder on your computer for the program
