@@ -22,4 +22,4 @@ These should be in the Python Standard Library
 5. The program will automatically create all needed folders and a config file in its folder
 
 ### Disclaimer
-I have only tested this program on linux and do not know if there will be any issues on other operating systems like windows. Feel free to try this on any operating system and report any issues
+This program has been tested on only windows and linux.
