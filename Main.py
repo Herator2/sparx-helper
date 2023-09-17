@@ -24,13 +24,13 @@ abc = [
     "t",
     "a",
 ]
-reset_code = "b10"
+reset_code = "1A"
 bookwork_code = reset_code
-
+debug_log = False
 
 # Clear Screen NEEDS WORK
 def clear():
-    for x in range(30):
+    for x in range(os.get_terminal_size()[1]):
         print("")
 
 
@@ -57,7 +57,7 @@ def printMenu():
     print(f"{spacer}Bookwork Code | {bookwork_code.upper()}\n{spacer}")
     option = str(
         input(
-            " | Code - Overwrite Bookwork Code\n | Open - Search For Bookwork Code\n | Exit - Exit Program\n | Any - Enter Answer For Bookwork Code\n | >>> "
+            "n | Next - Move on to next section\no | Open - Search For Bookwork Code\nc | Code - Overwrite Bookwork Code\ne | Exit - Exit Program\n  | Any - Enter Answer For Bookwork Code\n  | >>> "
         )
     )
     return option
@@ -81,25 +81,19 @@ def loadAnswer(bookwork_code):
 
 # Guess next code
 def getNextCode(lastcode):
-    # Reset Bookwork Code
-    if lastcode[0] == "a" or len(lastcode) > 3:
-        print(lastcode)
-        result = reset_code
-    else:
-        construct_code = []
-        for char in lastcode.lower():
-            construct_code.append(char)
-        if construct_code[1] == "9":
-            construct_code[1] = "0"  # Set Num To 0
-            construct_code[2] = str(int(construct_code[2]) + 1)
-        else:
-            construct_code[1] = str(int(construct_code[1]) + 1)
-        construct_code[0] = abc[int(construct_code[1]) + int(construct_code[2])]
-        result = "".join(construct_code)  # Parse
-        print(result)
-        print(construct_code)
-    return result
+    index = abc.index(lastcode[1].lower())
+    index += 1
+    bookwork_code = lastcode[0] + abc[index].upper()
+    return bookwork_code
 
+
+# Switch to next section
+def next_section(bookwork_code):
+    num = bookwork_code[0]
+    num = int(num)
+    num = num + 1
+    bookwork_code = str(num) + "A"
+    return bookwork_code
 
 # Config Read
 try:
@@ -131,9 +125,10 @@ except Exception as error_msg:
 
 
 # Startup Print
-print("Succsessfully Started Application")
-print("Press ENTER to start")
-input(">>>")
+print("Got To Main Loop")
+if debug_log:
+    print("Press ENTER to start")
+    input(">>>")
 
 
 # Main Loop
@@ -145,14 +140,18 @@ while True:
     clear()
     option = printMenu()
     # Exit
-    if option.lower() in ["exit"]:
+    if option.lower() in ["exit", "e"]:
         exit()
+    # Next section
+    elif option.lower() in ["next", "n"]:
+        bookwork_code = next_section(bookwork_code)
+        skip = True
     # Change Bookwork Code
-    elif option.lower() in ["code"]:
+    elif option.lower() in ["code", "c"]:
         bookwork_code = str(input("Enter Bookwork Code\n>>> "))
         skip = True
     # Open
-    elif option.lower() in ["open"]:
+    elif option.lower() in ["open", "o"]:
         temp_code = str(input("Enter Bookwork Code\n>>> "))
         ans = loadAnswer(temp_code)
         if ans == None:
