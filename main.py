@@ -1,32 +1,4 @@
 import os
-import json
-
-
-# Setup
-abc = [
-    "a",
-    "b",
-    "c",
-    "d",
-    "e",
-    "f",
-    "g",
-    "h",
-    "j",
-    "k",
-    "l",
-    "m",
-    "n",
-    "p",
-    "q",
-    "r",
-    "s",
-    "t",
-    "a",
-]
-reset_code = "1A"
-bookwork_code = reset_code
-debug_log = False
 
 # Clear Screen NEEDS WORK
 def clear():
@@ -47,14 +19,13 @@ def parsePath(path):
         path = path.replace("~/", "")
         path = os.path.join(getDirectory(), path)
         return path
-    else:
-        return path
+    return path
 
 
 # Print Menu
 def printMenu():
     spacer = "=" * os.get_terminal_size()[0]
-    print(f"{spacer}Bookwork Code | {bookwork_code.upper()}\n{spacer}")
+    print(f"{spacer}\nBookwork Code | {bookwork_code.upper()}\n{spacer}")
     option = str(
         input(
             "n | Next - Move on to next section\no | Open - Search For Bookwork Code\nc | Code - Overwrite Bookwork Code\ne | Exit - Exit Program\n  | Any - Enter Answer For Bookwork Code\n  | >>> "
@@ -65,22 +36,37 @@ def printMenu():
 
 # Save Bookwork Code
 def saveAnswer(answer, bookwork_code):
-    with open(os.path.join(SaveDirectory, bookwork_code.lower()), "w+") as File:
-        File.write(answer)
+    with open(os.path.join(save_directory, bookwork_code.lower()), "w+") as f:
+        f.write(answer)
 
 
 # Load Bookwork Code
 def loadAnswer(bookwork_code):
-    try:
-        with open(os.path.join(SaveDirectory, bookwork_code.lower()), "r") as File:
-            ans = File.read()
+    if get_filename(bookwork_code) in os.listdir(save_directory):
+        with open(os.path.join(save_directory, bookwork_code.lower()), "r") as f:
+            ans = f.read()
             return ans
-    except FileNotFoundError:
-        return None
 
+# Turn bookwork code into its text filename
+def get_filename(bookwork_code):
+    filename = bookwork_code.lower()
+    filename += ".txt"
+    return filename
 
 # Guess next code
 def getNextCode(lastcode):
+    abc = [
+        "a",
+        "b",
+        "c",
+        "d",
+        "e",
+        "f",
+        "g",
+        "h",
+        "j",
+        "k",
+    ]
     index = abc.index(lastcode[1].lower())
     index += 1
     bookwork_code = lastcode[0] + abc[index].upper()
@@ -95,75 +81,61 @@ def next_section(bookwork_code):
     bookwork_code = str(num) + "A"
     return bookwork_code
 
-# Config Read
-try:
-    with open(os.path.join(getDirectory(), "config.json"), "r") as config:
-        # Load Config
-        config = json.load(config)
-        SaveDirectory = config["SaveDirectory"]
-        SaveDirectory = parsePath(SaveDirectory)
-        print("Loaded config from config.json")
 
-# Config Auto Creation
-except:
-    with open(os.path.join(getDirectory(), "config.json"), "w") as config:
-        defualtConfig = {"SaveDirectory": "~/BookworkCodes"}
-        json.dump(defualtConfig, config, indent=4)
-        SaveDirectory = parsePath(defualtConfig["SaveDirectory"])
-        print("Made file config.json")
+# Setup Variables
+bookwork_code = "1A"
+save_directory_name = "data"
+save_directory = parsePath(f"~/{save_directory_name}")
 
-
-# Test BookworkCodes
-try:
-    with open(os.path.join(SaveDirectory, "Temp"), "w+") as File:
-        File.read()
-
-# Create Folder
-except Exception as error_msg:
-    os.mkdir(SaveDirectory)
-    print("Made Folder " + SaveDirectory)
-
-
-# Startup Print
-print("Got To Main Loop")
-if debug_log:
-    print("Press ENTER to start")
-    input(">>>")
-
+# Make data folder if it does not exist
+if save_directory_name not in os.listdir(parsePath("~/")):
+    os.mkdir(save_directory)
 
 # Main Loop
 while True:
-    # Setup Skip
-    skip = False
-
-    # Menu
+    # Get user input from menu
     clear()
-    option = printMenu()
-    # Exit
-    if option.lower() in ["exit", "e"]:
+    raw_option = printMenu()
+    options = raw_option.lower().split()
+
+    # Do not do anything
+    if len(options) == 0:
+        continue
+
+    # Exit command
+    if options[0] in ["exit", "e"] and len(options) == 1:
         exit()
+    
     # Next section
-    elif option.lower() in ["next", "n"]:
+    if options[0] in ["next", "n"] and len(options) == 1:
         bookwork_code = next_section(bookwork_code)
-        skip = True
+        continue
+
     # Change Bookwork Code
-    elif option.lower() in ["code", "c"]:
-        bookwork_code = str(input("Enter Bookwork Code\n>>> "))
-        skip = True
+    if options[0] in ["code", "c"]:
+        if len(options) > 1:
+            bookwork_code = options[1]
+            continue
+        bookwork_code = str(input("Please enter Bookwork Code\n>>> "))
+        continue
+
     # Open
-    elif option.lower() in ["open", "o"]:
-        temp_code = str(input("Enter Bookwork Code\n>>> "))
-        ans = loadAnswer(temp_code)
+    if options[0] in ["open", "o"]:
+        open_code = ""
+        if len(options) > 1 and len(options[1]) == 2:
+            open_code = options[1]
+        else:
+            open_code = str(input("Enter Bookwork Code\n>>> "))
+        ans = loadAnswer(open_code)
         if ans == None:
             print("Bookwork Code Not Found")
         else:
-            print(temp_code.lower() + ":", ans)
+            print(open_code.lower() + ":", ans)
         input(">>> ")
-        skip = True
-    # Save Ans
-    else:
-        saveAnswer(option, bookwork_code)
+        continue
 
-    # Get Next Code
-    if not skip:
-        bookwork_code = getNextCode(bookwork_code)
+    # Save Answer
+    saveAnswer(raw_option, bookwork_code)
+
+    # Get next code
+    bookwork_code = getNextCode(bookwork_code)
