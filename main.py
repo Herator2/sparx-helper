@@ -1,6 +1,6 @@
 import os
 
-# Clear Screen NEEDS WORK
+# TODO Clear screen
 def clear():
     for x in range(os.get_terminal_size()[1]):
         print("")
@@ -22,54 +22,49 @@ def parsePath(path):
     return path
 
 
-# Print Menu
+# Print input menu
 def printMenu():
-    spacer = "=" * os.get_terminal_size()[0]
-    print(f"{spacer}\nBookwork Code | {bookwork_code.upper()}\n{spacer}")
+    spacer = "===||" + ("=" * (os.get_terminal_size()[0] - 5 - 7)) + "||====="
+    print(spacer)
+    print("KEY|| DESCRIPTION" + (" " * (os.get_terminal_size()[0] - 17 - 10)) + f"{bookwork_code} || CODE")
+    print(spacer)
     option = str(
         input(
-            "n | Next - Move on to next section\no | Open - Search For Bookwork Code\nc | Code - Overwrite Bookwork Code\ne | Exit - Exit Program\n  | Any - Enter Answer For Bookwork Code\n  | >>> "
+            " n || Move on to next Section\n o || Search for Bookwork Code\n c || Overwrite Bookwork Code\n e || Exit\n ~ || Enter Answer\n   || >>> "
         )
     )
+    print(spacer)
     return option
 
 
 # Save Bookwork Code
 def saveAnswer(answer, bookwork_code):
-    with open(os.path.join(save_directory, bookwork_code.lower()), "w+") as f:
+    bookwork_code = verifyBookworkPrompt(bookwork_code)
+    with open(os.path.join(save_directory, getFilename(bookwork_code)), "w") as f:
         f.write(answer)
 
 
 # Load Bookwork Code
 def loadAnswer(bookwork_code):
-    if get_filename(bookwork_code) in os.listdir(save_directory):
-        with open(os.path.join(save_directory, bookwork_code.lower()), "r") as f:
+    if getFilename(bookwork_code) in os.listdir(save_directory):
+        with open(os.path.join(save_directory, getFilename(bookwork_code)), "r") as f:
             ans = f.read()
             return ans
 
 # Turn bookwork code into its text filename
-def get_filename(bookwork_code):
+def getFilename(bookwork_code: str) -> str:
     filename = bookwork_code.lower()
     filename += ".txt"
     return filename
 
 # Guess next code
 def getNextCode(lastcode):
-    abc = [
-        "a",
-        "b",
-        "c",
-        "d",
-        "e",
-        "f",
-        "g",
-        "h",
-        "j",
-        "k",
-    ]
+    lastcode = verifyBookworkPrompt(lastcode)
+    abc = "abcdefghijk"
     index = abc.index(lastcode[1].lower())
     index += 1
     bookwork_code = lastcode[0] + abc[index].upper()
+    bookwork_code = verifyBookworkPrompt(bookwork_code)
     return bookwork_code
 
 
@@ -79,6 +74,24 @@ def next_section(bookwork_code):
     num = int(num)
     num = num + 1
     bookwork_code = str(num) + "A"
+    bookwork_code = verifyBookworkPrompt(bookwork_code)
+    return bookwork_code
+
+# Check if a bookwork code is in a valid format
+def verifyBookworkCode(bookwork_code: str) -> bool:
+    if len(bookwork_code) != 2:
+        return False
+    if bookwork_code[0] not in "123456789":
+        return False
+    if bookwork_code[1].lower() not in "abcdefghijk":
+        return False
+    return True
+
+# Check if bookwork code is valid and promot if it is not
+def verifyBookworkPrompt(bookwork_code: str) -> str:
+    while not verifyBookworkCode(bookwork_code):
+        bookwork_code = input("[MALFORMED CODE] Re-enter a valid bookwork code >>> ")
+    bookwork_code = bookwork_code.upper() # Make sure second character is upper case
     return bookwork_code
 
 
@@ -115,8 +128,9 @@ while True:
     if options[0] in ["code", "c"]:
         if len(options) > 1:
             bookwork_code = options[1]
-            continue
-        bookwork_code = str(input("Please enter Bookwork Code\n>>> "))
+        else:
+            bookwork_code = str(input("[PROMPT] Enter Bookwork Code >>> "))
+        bookwork_code = verifyBookworkPrompt(bookwork_code)
         continue
 
     # Open
@@ -125,13 +139,13 @@ while True:
         if len(options) > 1 and len(options[1]) == 2:
             open_code = options[1]
         else:
-            open_code = str(input("Enter Bookwork Code\n>>> "))
+            open_code = str(input("[PROMPT] Enter Bookwork Code >>> "))
         ans = loadAnswer(open_code)
         if ans == None:
-            print("Bookwork Code Not Found")
+            print(f"[NULL ANS] No data found for code {open_code}")
         else:
             print(open_code.lower() + ":", ans)
-        input(">>> ")
+        input("[PRESS ENTER TO CONTINUE] >>> ")
         continue
 
     # Save Answer
