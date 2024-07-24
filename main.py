@@ -29,7 +29,7 @@ def printMenu() -> str:
     print("├─────┼" + ("─" * (os.get_terminal_size()[0] - 7 - 8)) + "┴──────┘")
     option = str(
         input(
-            "│  n  │ Move on to next Section\n│  o  │ Search for Bookwork Code\n│  c  │ Overwrite Bookwork Code\n│  e  │ Exit\n│  ~  │ Enter Answer\n└─────┘ >>> "
+            "│  n  │ Move on to next Section\n│  o  │ Search for Bookwork Code\n│  c  │ Overwrite Bookwork Code\n│  e  │ Exit\n│  ~  │ Enter Answer\n│     │ >>> "
         )
     )
     return option
@@ -58,9 +58,11 @@ def getFilename(bookwork_code: str) -> str:
 # Guess next code
 def getNextCode(lastcode: str) -> str:
     lastcode = verifyBookworkPrompt(lastcode)
-    abc = "abcdefghijk"
+    abc = "abcdefghijklmnopqrstuvwxyz"
     index = abc.index(lastcode[1].lower())
     index += 1
+    if index >= len(abc):
+        index = 0
     bookwork_code = lastcode[0] + abc[index].upper()
     bookwork_code = verifyBookworkPrompt(bookwork_code)
     return bookwork_code
@@ -88,10 +90,20 @@ def verifyBookworkCode(bookwork_code: str) -> bool:
 # Check if bookwork code is valid and promot if it is not
 def verifyBookworkPrompt(bookwork_code: str) -> str:
     while not verifyBookworkCode(bookwork_code):
-        bookwork_code = input("[MALFORMED CODE] Re-enter a valid bookwork code >>> ")
+        bookwork_code = styledInput("Re-enter a valid bookwork code", "?")
     bookwork_code = bookwork_code.upper() # Make sure second character is upper case
     return bookwork_code
 
+
+# Take input using a prompt with fancy styling to match the main menu
+def styledInput(prompt, symbol="?"):
+    print("├" + ("─" * (len(symbol) + 4)) + "┼" + ("─" * (len(prompt) + 2)) + "┐")
+    print("│  " + symbol + "  │ " + prompt + " │")
+    print("├" + ("─" * (len(symbol) + 4)) + "┼" + ("─" * (len(prompt) + 2)) + "┘")
+    return input("│" + (" " * (len(symbol) + 4)) + "│" + " >>> ")
+
+def styledPrint(prompt, symbol="!"):
+    print("│  " + symbol + "  │ " + prompt + (" " * (os.get_terminal_size()[0] - len(symbol) - len(prompt) - 8)) + "│")
 
 # Setup Variables
 bookwork_code = "1A"
@@ -127,7 +139,7 @@ while True:
         if len(options) > 1:
             bookwork_code = options[1]
         else:
-            bookwork_code = str(input("[PROMPT] Enter Bookwork Code >>> "))
+            bookwork_code = styledInput("Enter Bookwork Code to change to", "?")
         bookwork_code = verifyBookworkPrompt(bookwork_code)
         continue
 
@@ -137,13 +149,16 @@ while True:
         if len(options) > 1 and len(options[1]) == 2:
             open_code = options[1]
         else:
-            open_code = str(input("[PROMPT] Enter Bookwork Code >>> "))
+            open_code = styledInput("Enter Bookwork Code to read answer from", "?")
         ans = loadAnswer(open_code)
-        if ans == None:
-            print(f"[NULL ANS] No data found for code {open_code}")
+        if open_code == "":
+            styledPrint(f"Input was blank, Skipping...")
+            continue
+        elif ans == None:
+            styledPrint(f"No data found for code {open_code}")   
         else:
-            print(open_code.lower() + ":", ans)
-        input("[PRESS ENTER TO CONTINUE] >>> ")
+            styledPrint(open_code.upper() + ": " + ans, "!")
+        styledInput("Press enter to continue...")
         continue
 
     # Save Answer
