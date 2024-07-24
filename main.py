@@ -24,16 +24,14 @@ def parsePath(path: str) -> str:
 
 # Print input menu
 def printMenu() -> str:
-    spacer = "===||" + ("=" * (os.get_terminal_size()[0] - 5 - 7)) + "||====="
-    print(spacer)
-    print("KEY|| DESCRIPTION" + (" " * (os.get_terminal_size()[0] - 17 - 10)) + f"{bookwork_code} || CODE")
-    print(spacer)
+    print("┌─────┬" + ("─" * (os.get_terminal_size()[0] - 7 - 8)) + "┬──────┐")
+    print("│ KEY │ DESCRIPTION" + (" " * (os.get_terminal_size()[0] - 30)) + f"{bookwork_code} │ CODE │")
+    print("├─────┼" + ("─" * (os.get_terminal_size()[0] - 7 - 8)) + "┴──────┘")
     option = str(
         input(
-            " n || Move on to next Section\n o || Search for Bookwork Code\n c || Overwrite Bookwork Code\n e || Exit\n ~ || Enter Answer\n   || >>> "
+            "│  n  │ Move on to next Section\n│  o  │ Search for Bookwork Code\n│  c  │ Overwrite Bookwork Code\n│  e  │ Exit\n│  ~  │ Enter Answer\n└─────┘ >>> "
         )
     )
-    print(spacer)
     return option
 
 
