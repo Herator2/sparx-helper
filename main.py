@@ -1,20 +1,20 @@
 import os
 
 # TODO Clear screen
-def clear():
+def clear() -> None:
     for x in range(os.get_terminal_size()[1]):
         print("")
 
 
 # Get directory
-def getDirectory():
+def getDirectory() -> str:
     path = os.path.dirname(os.path.realpath(__file__))
     path = path.replace("/src", "")
     return path
 
 
 # Change path to absolute from relative
-def parsePath(path):
+def parsePath(path: str) -> str:
     if "~" in path:
         path = path.replace("~/", "")
         path = os.path.join(getDirectory(), path)
@@ -23,7 +23,7 @@ def parsePath(path):
 
 
 # Print input menu
-def printMenu():
+def printMenu() -> str:
     spacer = "===||" + ("=" * (os.get_terminal_size()[0] - 5 - 7)) + "||====="
     print(spacer)
     print("KEY|| DESCRIPTION" + (" " * (os.get_terminal_size()[0] - 17 - 10)) + f"{bookwork_code} || CODE")
@@ -38,14 +38,14 @@ def printMenu():
 
 
 # Save Bookwork Code
-def saveAnswer(answer, bookwork_code):
+def saveAnswer(answer: str, bookwork_code: str) -> None:
     bookwork_code = verifyBookworkPrompt(bookwork_code)
     with open(os.path.join(save_directory, getFilename(bookwork_code)), "w") as f:
         f.write(answer)
 
 
 # Load Bookwork Code
-def loadAnswer(bookwork_code):
+def loadAnswer(bookwork_code: str) -> str|None:
     if getFilename(bookwork_code) in os.listdir(save_directory):
         with open(os.path.join(save_directory, getFilename(bookwork_code)), "r") as f:
             ans = f.read()
@@ -58,7 +58,7 @@ def getFilename(bookwork_code: str) -> str:
     return filename
 
 # Guess next code
-def getNextCode(lastcode):
+def getNextCode(lastcode: str) -> str:
     lastcode = verifyBookworkPrompt(lastcode)
     abc = "abcdefghijk"
     index = abc.index(lastcode[1].lower())
@@ -69,7 +69,7 @@ def getNextCode(lastcode):
 
 
 # Switch to next section
-def next_section(bookwork_code):
+def next_section(bookwork_code: str) -> str:
     num = bookwork_code[0]
     num = int(num)
     num = num + 1
