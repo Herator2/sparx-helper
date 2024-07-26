@@ -1,7 +1,8 @@
-# Sparx Maths Bookwork Code Logger
+# Sparx Maths Helper
 The goal of this program is to be able to complete your sparx maths homework faster and more efficiently.
 It does this by automatically guessing your bookwork code and saving the answer to a folder. 
-You are then able to type in a bookwork code to return the answer when there is a check
+You are then able to type in a bookwork code to return the answer when there is a check.
+Easily get 100% bookwork accuracy!
 
 ## Features
  - Automatically guesses next bookwork code to save you from having to type it in.
