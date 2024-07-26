@@ -1,6 +1,6 @@
 import os
 
-# TODO Clear screen
+# Clear screen
 def clear() -> None:
     for x in range(os.get_terminal_size()[1]):
         print("")
@@ -97,6 +97,7 @@ def verifyBookworkPrompt(bookwork_code: str) -> str:
 
 # Take input using a prompt with fancy styling to match the main menu
 def styledInput(prompt, symbol="?"):
+    # Sorry for anyone attempting to read this
     print("├" + ("─" * (len(symbol) + 4)) + "┼" + ("─" * (len(prompt) + 2)) + "┐")
     print("│  " + symbol + "  │ " + prompt + " │")
     print("├" + ("─" * (len(symbol) + 4)) + "┼" + ("─" * (len(prompt) + 2)) + "┘")
@@ -105,10 +106,18 @@ def styledInput(prompt, symbol="?"):
 def styledPrint(prompt, symbol="!"):
     print("│  " + symbol + "  │ " + prompt + (" " * (os.get_terminal_size()[0] - len(symbol) - len(prompt) - 8)) + "│")
 
+def displayAlert(text):
+    alert_length = len(text) + 4
+    whitespace = ((os.get_terminal_size()[0] // 2) - (alert_length // 2)) * " "
+    print(whitespace + "╔═" + ("═" * len(text)) + "═╗")
+    print(whitespace + "║ " + text + " ║")
+    print(whitespace + "╚═" + ("═" * len(text)) + "═╝")
+
 # Setup Variables
 bookwork_code = "1A"
 save_directory_name = "data"
 save_directory = parsePath(f"~/{save_directory_name}")
+alerts = []
 
 # Make data folder if it does not exist
 if save_directory_name not in os.listdir(parsePath("~/")):
@@ -116,8 +125,13 @@ if save_directory_name not in os.listdir(parsePath("~/")):
 
 # Main Loop
 while True:
-    # Get user input from menu
+    # Clear screen and print alerts
     clear()
+    for alert in alerts:
+        displayAlert(alert)
+    alerts = []
+
+    # Get user input from menu
     raw_option = printMenu()
     options = raw_option.lower().split()
 
@@ -132,6 +146,7 @@ while True:
     # Next section
     if options[0] in ["next", "n"] and len(options) == 1:
         bookwork_code = next_section(bookwork_code)
+        alerts.append(f"Moved to next section")
         continue
 
     # Change Bookwork Code
@@ -141,6 +156,7 @@ while True:
         else:
             bookwork_code = styledInput("Enter Bookwork Code to change to", "?")
         bookwork_code = verifyBookworkPrompt(bookwork_code)
+        alerts.append(f"Changed Bookwork Code to {bookwork_code}")
         continue
 
     # Open
@@ -152,17 +168,18 @@ while True:
             open_code = styledInput("Enter Bookwork Code to read answer from", "?")
         ans = loadAnswer(open_code)
         if open_code == "":
-            styledPrint(f"Input was blank, Skipping...")
+            alerts.append("Skipped opening blank code...")
             continue
         elif ans == None:
-            styledPrint(f"No data found for code {open_code}")   
-        else:
-            styledPrint(open_code.upper() + ": " + ans, "!")
+            alerts.append(f"No data found for code: {open_code}")
+            continue
+        styledPrint(open_code.upper() + ": " + ans, "!")
         styledInput("Press enter to continue...")
         continue
 
     # Save Answer
     saveAnswer(raw_option, bookwork_code)
+    alerts.append(f"Saved answer: {raw_option} to {bookwork_code.upper()}")
 
     # Get next code
     bookwork_code = getNextCode(bookwork_code)
